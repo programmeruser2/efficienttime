@@ -5,21 +5,38 @@ const goalSchema = new mongoose.Schema({
 		type: String,
 		required: true
 	},
+	goalDescription: String,
+
+
 	type: {
 		type: String,
 		enum: ['everyday', 'totaltime', 'numericalgoal', 'booleangoal', 'categorical'],
 		required: true
 	},
-	goalDescription: String,
+
+
+	// everyday => dailyGoal
 	dailyGoal: Number, //daily goal of how many minutes, for everyday type
+
+	//totaltime => totalGoal, totalStatus
 	totalGoal: Number, //total goal for totaltime goal type
+	totalStatus: Number, //totaltime status
+	
+	//numericalgoal => numericalGoal, numericalStatus
 	numericalGoal: Number, //numericalgoal
-	totalMinutes: Number, //totaltime status
 	numericalStatus: Number,
+
+	//categorical => categoryStatus, categories
 	categoryStatus: String,
 	categories: [{ //for categorical goal
 		type: String
-	}]
+	}],
+
+	//booleangoal => booleanStatus
+	booleanStatus: {
+		type: Boolean,
+		default: false
+	}
 });
 
 
