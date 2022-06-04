@@ -56,7 +56,7 @@ const sendMail = (settings) => {
  */
 exports.getLogin = (req, res) => {
   if (req.user) {
-    return res.redirect('/');
+    return res.redirect('/dash');
   }
   res.render('account/login', {
     title: 'Login'
@@ -87,7 +87,7 @@ exports.postLogin = (req, res, next) => {
     req.logIn(user, (err) => {
       if (err) { return next(err); }
       req.flash('success', { msg: 'Success! You are logged in.' });
-      res.redirect(req.session.returnTo || '/');
+      res.redirect(req.session.returnTo || '/dash');
     });
   })(req, res, next);
 };
@@ -151,7 +151,7 @@ exports.postSignup = (req, res, next) => {
         if (err) {
           return next(err);
         }
-        res.redirect('/');
+        res.redirect('/dash');
       });
     });
   });
