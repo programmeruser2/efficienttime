@@ -23,8 +23,8 @@ router.post('/', async (req, res) => {
 	for (const val of numberValues) {
 		data[val] = Number(req.body[val]);
 	}
-	data.categories = typeof req.body.categories === undefined ? req.body.categories : (req.body.categories instanceof Array ? req.body.categories : JSON.parse(req.body.categories));
-	data.booleanStatus = typeof req.body.categories !== 'undefined' ? (data.booleanStatus === true || data.booleanStatus === 'true') : req.body.categories;
+	data.categories = typeof req.body.categories === undefined ? undefined : JSON.parse(req.body.categories);
+	data.booleanStatus = typeof req.body.booleanStatus !== 'undefined' ? data.booleanStatus === 'true' : undefined;
 	const goal = new Goal();
 	await goal.save();
 	res.send({status:'OK'})
