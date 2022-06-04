@@ -82,7 +82,7 @@ app.use((req, res, next) => {
     // Multer multipart/form-data handling needs to occur before the Lusca CSRF check.
     next();
   } else {
-    //lusca.csrf()(req, res, next);
+    lusca.csrf()(req, res, next);
   }
 });
 app.use(lusca.xframe('SAMEORIGIN'));
@@ -116,6 +116,7 @@ app.use('/webfonts', express.static(path.join(__dirname, 'node_modules/@fortawes
 /**
  * Primary app routes.
  */
+console.log('hello we are setting routes');
 app.get('/', homeController.index);
 app.get('/login', userController.getLogin);
 app.post('/login', userController.postLogin);
@@ -253,7 +254,7 @@ if (process.env.NODE_ENV === 'development') {
     res.status(500).send('Server Error');
   });
 }
-
+app.get('/TEST', (req, res) => res.send('HOPEFULLY THIS WORKS'));
 /**
  * Start Express server.
  */
@@ -263,3 +264,4 @@ app.listen(app.get('port'), () => {
 });
 
 module.exports = app;
+console.log('hey we finished entire app.js!!!')

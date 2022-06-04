@@ -3,8 +3,9 @@
  * Home page.
  */
 exports.index = (req, res) => {
+	console.log('we are at home page /')
 	if (req.isAuthenticated()) {
-		res.redirect('/dash')
+		 return res.redirect('/dash')
 	}
   res.render('home', {
     title: 'Home'
@@ -13,5 +14,5 @@ exports.index = (req, res) => {
 exports.dash = (req, res) => {
 	res.render('dash', {
 		title: 'Dashboard'
-	})
+	});
 }
