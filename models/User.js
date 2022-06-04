@@ -1,7 +1,7 @@
 const bcrypt = require('@node-rs/bcrypt');
 const crypto = require('crypto');
 const mongoose = require('mongoose');
-
+const Goal = require('./Goal').schema;
 const userSchema = new mongoose.Schema({
   email: { type: String, unique: true },
   password: String,
@@ -28,7 +28,8 @@ const userSchema = new mongoose.Schema({
     location: String,
     website: String,
     picture: String
-  }
+  },
+	goals: [{Goal}]
 }, { timestamps: true });
 
 /**

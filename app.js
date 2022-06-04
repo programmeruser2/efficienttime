@@ -29,7 +29,7 @@ dotenv.config({ path: '.env.example' });
  */
 const homeController = require('./controllers/home');
 const userController = require('./controllers/user');
-const apiController = require('./controllers/api');
+const apiController = require('./controllers/api/api');
 const contactController = require('./controllers/contact');
 
 /**
@@ -144,7 +144,7 @@ app.get('/dash', passportConfig.isAuthenticated, homeController.dash);
 /**
  * API
  */
-app.use('/api', require('./controllers/api'))
+app.use('/api', require('./controllers/api/api'))
 
 /**
  * API examples routes.

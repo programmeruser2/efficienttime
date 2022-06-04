@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const passportConfig = require('../config/passport');
+const passportConfig = require('../../config/passport');
 router.use(passportConfig.isAuthenticated)
 router.get('/', (req, res) => {
 	res.send('OK');
 });
-router.get('/')
+router.use('/goals', require('./goals'));
 module.exports = router;
