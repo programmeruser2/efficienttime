@@ -141,6 +141,10 @@ app.get('/account/unlink/:provider', passportConfig.isAuthenticated, userControl
 */
 
 app.get('/dash', passportConfig.isAuthenticated, homeController.dash);
+/**
+ * API
+ */
+app.use('/api', require('./controllers/api'))
 
 /**
  * API examples routes.
