@@ -11,5 +11,7 @@ exports.index = (req, res) => {
   });
 };
 exports.dash = (req, res) => {
-	res.send('hai');
+	res.render('dash', {
+		title: 'Dashboard'
+	})
 }
