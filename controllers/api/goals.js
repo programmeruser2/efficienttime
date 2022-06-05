@@ -60,7 +60,7 @@ router.post('/', asyncWrap(async (req, res) => {
 	if (['everyday', 'totaltime', 'numericalgoal', 'booleangoal', 'categorical'].indexOf(req.body.type) === -1) errors.push('Invalid goal type');
 	if (!req.body.goalName) errors.push('The goal name is required');
 
-	if (!req.body.dailyGoal) errors.push('Daily goal is required');
+	//if (!req.body.dailyGoal) errors.push('Daily goal is required');
 
 	if (errors.length) return res.status(400).json({errors});
 	console.log('we finish validation, start insert');
