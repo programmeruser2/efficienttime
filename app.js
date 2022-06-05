@@ -31,6 +31,7 @@ const homeController = require('./controllers/home');
 const userController = require('./controllers/user');
 const apiController = require('./controllers/api/api');
 const contactController = require('./controllers/contact');
+const efficientTimeController = require('./controllers/efficienttime');
 
 /**
  * API keys and Passport configuration.
@@ -146,12 +147,13 @@ app.get('/account/unlink/:provider', passportConfig.isAuthenticated, userControl
 /** 
  * EfficientTime Routes
 */
-
+//console.log(efficientTimeController)
 app.get('/dash', passportConfig.isAuthenticated, homeController.dash);
+app.get('/goals', passportConfig.isAuthenticated, efficientTimeController.goals);
 /**
  * API
  */
-app.use('/api', require('./controllers/api/api'))
+app.use('/api', require('./controllers/api/api'));
 
 /**
  * API examples routes.
