@@ -82,7 +82,7 @@ app.use((req, res, next) => {
     // Multer multipart/form-data handling needs to occur before the Lusca CSRF check.
     next();
   } else {
-    lusca.csrf()(req, res, next);
+    //lusca.csrf()(req, res, next);
   }
 });
 app.use(lusca.xframe('SAMEORIGIN'));
@@ -249,12 +249,16 @@ if (process.env.NODE_ENV === 'development') {
   // only use in development
   app.use(errorHandler());
 } else {
-  app.use((err, req, res) => {
-    console.error(err);
+  app.use((err, req, res, next) => {
+		// res is req not actually res??? thats weird
+		//console.log('the error is:', res);
+		console.error(err);
+    //console.error(err);
     res.status(500).send('Server Error');
   });
 }
 app.get('/TEST', (req, res) => res.send('HOPEFULLY THIS WORKS'));
+//app.get('/error', (req,res) => { throw new Error('test error') }) // tested this and it works
 /**
  * Start Express server.
  */
