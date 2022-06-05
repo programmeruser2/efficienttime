@@ -6,12 +6,13 @@ const types = {
 	numericalgoal: 'Goal for Numerical Milestone'
 }
 async function updateGoals() {
-	const child = container.lastElementChild;
+	let child = container.lastElementChild;
 	while (child) {
 		container.removeChild(child);
 		child = container.lastElementChild;
 	}
 	const goals = await api.goals.list();
+	console.log(goals);
 	for (const id of goals) {
 		const goal = await api.goals.get(id);
 		//yes innerhtml bad too lazy no time how many times do i have to say this
@@ -22,7 +23,7 @@ async function updateGoals() {
 <h2>${goal.goalName}</h2>
 <p>${goal.goalDescription || ''}</p>
 <p>Type: ${types[goal.type]}</p>
-<p>Goal: ${goal.dailyGoal} ${goal.type === 'numericalgoal' ? '' : 'minutes'} ${goal.type === 'everyday' ? 'per day' : ''}</p>
+<p>Goal: ${goal.type === 'everyday' ? goal.dailyGoal : (goal.type === 'totaltime' ? goal.totalGoal : goal.numericalGoal)} ${goal.type === 'numericalgoal' ? '' : 'minutes'} ${goal.type === 'everyday' ? 'per day' : ''}</p>
 <button onclick="complete('${id}', '${goal.type}')">Complete</button>
 `;
 		el.style.border = '1px solid lightgray';
