@@ -1,3 +1,39 @@
+const container = document.querySelector('#goals-container');
+
+const types = {
+	everyday: 'Daily Goal',
+	totaltime: 'Total Time Goal',
+	numericalgoal: 'Goal for Numerical Milestone'
+}
+async function updateGoals() {
+	const child = container.lastElementChild;
+	while (child) {
+		container.removeChild(child);
+		child = container.lastElementChild;
+	}
+	const goals = await api.goals.list();
+	for (const id of goals) {
+		const goal = await api.goals.get(id);
+		//yes innerhtml bad too lazy no time how many times do i have to say this
+		const el = document.createElement('div');
+		el.innerHTML = 
+`
+<h2>${goal.goalName}</h2>
+<p>${goal.goalDescription || ''}</p>
+<p>Type: ${types[goal.type]}</p>
+<p>Goal: ${goal.dailyGoal} ${goal.type === 'numericalgoal' ? '' : 'minutes'} ${goal.type === 'everyday' ? 'per day' : ''}</p>
+`;
+		el.style.border = '1px solid lightgray';
+		container.append(el);
+	}
+}
+
+
+updateGoals();
+
+
+
+
 const questions = {
 	'everyday': 'How many minutes every day?',
 	'totaltime': 'What is your goal for the total number of minutes?',
@@ -102,5 +138,6 @@ async function newGoal() {
 	} else if (type === 'numericalgoal') {
 		options.numericalGoal = goal;
 	}
-	api.goals.new(options);
+	await api.goals.new(options);
+	await updateGoals();
 }
