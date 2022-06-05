@@ -45,3 +45,6 @@ api.goals.complete = async (id, newValue) => {
 		})
 	});
 };
+api.goals.xp = async () => {
+	return (await fetch('/api/xp').then(res=>res.json()).then(d=>d.xp));
+}

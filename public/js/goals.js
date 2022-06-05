@@ -28,6 +28,7 @@ async function updateGoals() {
 		el.style.border = '1px solid lightgray';
 		container.append(el);
 	}
+	document.querySelector('#xp').innerText = `Your XP: ${await api.goals.xp()}`;
 }
 
 
@@ -80,6 +81,7 @@ async function complete(id, type) {
 		});
 		api.goals.complete(id, newval);
 	}
+	await updateGoals();
 }
 
 const questions = {
