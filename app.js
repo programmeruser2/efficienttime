@@ -41,6 +41,8 @@ const passportConfig = require('./config/passport');
  * Create Express server.
  */
 const app = express();
+//remove this later obviously, just logging for now
+//dont think its cookies fault since i cleared and still doesnt work
 
 /**
  * Connect to MongoDB.
@@ -64,7 +66,9 @@ app.use(sass({
   src: path.join(__dirname, 'public'),
   dest: path.join(__dirname, 'public')
 }));
+
 app.use(logger('dev'));
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(session({
@@ -82,9 +86,11 @@ app.use((req, res, next) => {
     // Multer multipart/form-data handling needs to occur before the Lusca CSRF check.
     next();
   } else {
-    //lusca.csrf()(req, res, next);
+    //lusca.csrf()(req, res, next); //lol this was causing it to freeze
+		next();
   }
 });
+
 app.use(lusca.xframe('SAMEORIGIN'));
 app.use(lusca.xssProtection(true));
 app.disable('x-powered-by');
