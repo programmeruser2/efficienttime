@@ -12,7 +12,6 @@ async function goalAuthAsync(req, res, next) {
 	console.log('finish')
 	if (!goal || !user.hasGoal(goal._id.valueOf())) return res.status(404).json({errors:['no such goal']});
 	next();
-	
 }
 const goalAuth = asyncWrap(goalAuthAsync);
 //app.use(goalAuth);
@@ -30,9 +29,24 @@ router.get('/:id', goalAuth, (req, res) => {
 	const { user, goal } = req;
 	res.json(goal.toJSON());
 });
-router.put('/:id', goalAuth, async (req, res) => {
-
-});
+router.put('/:id', goalAuth, asyncWrap(async (req, res) => {
+	//update goal data
+	const { goal } = req;
+	const stringValues = ['goalName','goalDescription', 'type', 'categoryStatus'];
+	const numberValues = ['dailyGoal', 'totalGoal', 'totalStatus', 'numericalGoal', 'numericalStatus'];
+	for (const val of stringValues) {
+		if (req.body[val] === undefined) continue;
+		goal[val] = req.body[val];
+	}
+	for (const val of numberValues) {
+		if (req.body[val] === undefined) continue;
+		goal[val] = Number(req.body[val]);
+	}
+	goal.categories = typeof req.body.categories === 'undefined' ? goal.categories : (req.body.categories instanceof Array ? req.body.categories : JSON.parse(req.body.categories));
+	goal.booleanStatus = typeof req.body.booleanStatus !== 'undefined' ? (req.body.booleanStatus === true || req.body.booleanStatus === 'true') : goal.booleanStatus;
+	await goal.save();
+	res.json({status:'OK'});
+}));
 router.delete('/:id', goalAuth, asyncWrap(async (req, res) => {
 	req.user.goals = req.user.goals.filter(item => item._id.valueOf() !== req.params.id);
 	await req.user.save();
@@ -62,7 +76,7 @@ router.post('/', asyncWrap(async (req, res) => {
 		data[val] = Number(req.body[val]);
 	}
 	data.categories = typeof req.body.categories === 'undefined' ? undefined : (req.body.categories instanceof Array ? req.body.categories : JSON.parse(req.body.categories));
-	data.booleanStatus = typeof req.body.booleanStatus !== 'undefined' ? (data.booleanStatus === true || data.booleanStatus === 'true') : undefined;
+	data.booleanStatus = typeof req.body.booleanStatus !== 'undefined' ? (req.body.booleanStatus === true || req.body.booleanStatus === 'true') : undefined;
 	console.log(data);
 	console.log('we start save');
 	const goal = new Goal(data);
