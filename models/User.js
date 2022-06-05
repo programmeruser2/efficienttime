@@ -70,7 +70,12 @@ userSchema.methods.gravatar = function gravatar(size) {
   const md5 = crypto.createHash('md5').update(this.email).digest('hex');
   return `https://gravatar.com/avatar/${md5}?s=${size}&d=retro`;
 };
-
+userSchema.methods.getGoals = function getGoals() {
+	return this.goals.map(item=>item._id.valueOf());
+}
+userSchema.methods.hasGoal = function hasGoal(id) {
+	return this.getGoals().indexOf(id) !== -1;
+}
 const User = mongoose.model('User', userSchema);
 
 module.exports = User;

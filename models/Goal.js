@@ -29,7 +29,8 @@ const goalSchema = new mongoose.Schema({
 	//categorical => categoryStatus, categories
 	categoryStatus: String,
 	categories: [{ //for categorical goal
-		type: String
+		type: String,
+		default: undefined
 	}],
 
 	//booleangoal => booleanStatus
