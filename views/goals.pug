@@ -2,5 +2,8 @@ extends layout
 block head 
 	script(src='/js/goals.js' defer='')
 block content
+	//yes inline bad but im lazy and not enough time
 	h1 Goals
+	button(onclick='newGoal()') New
 	div#goals-container 
+		//display the goals here
