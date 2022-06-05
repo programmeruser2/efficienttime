@@ -88,5 +88,16 @@ router.post('/', asyncWrap(async (req, res) => {
 	console.log(req.user);
 	res.send({status:'OK'});
 }));
-
+router.post('/:id/complete', goalAuthAsync, (req, res) => {
+	if (req.goal.type !== 'everyday') {
+		const newValue = req.body.value;
+		const xp = Math.abs(req.body.value - req.goal.status);
+		req.user.xp += xp;
+	} else {
+		req.goal.dailyStreak += 1;
+		req.user.xp += dailyStreak;
+	}
+	req.user.save();
+	res.json({status:'OK'});
+});
 module.exports = router;

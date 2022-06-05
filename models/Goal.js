@@ -17,10 +17,16 @@ const goalSchema = new mongoose.Schema({
 
 	// everyday => dailyGoal
 	dailyGoal: Number, //daily goal of how many minutes, for everyday type
-
+	dailyStreak: {
+		type: Number,
+		default: 0
+	},
 	//totaltime => totalGoal, totalStatus
 	totalGoal: Number, //total goal for totaltime goal type
-	totalStatus: Number, //totaltime status
+	totalStatus: {
+		type: Number,
+		default: 0
+	}, //totaltime status
 	
 	//numericalgoal => numericalGoal, numericalStatus
 	numericalGoal: Number, //numericalgoal
