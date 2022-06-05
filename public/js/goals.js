@@ -24,7 +24,7 @@ async function updateGoals() {
 <p>${goal.goalDescription || ''}</p>
 <p>Type: ${types[goal.type]}</p>
 <p>Goal: ${goal.type === 'everyday' ? goal.dailyGoal : (goal.type === 'totaltime' ? goal.totalGoal : goal.numericalGoal)} ${goal.type === 'numericalgoal' ? '' : 'minutes'} ${goal.type === 'everyday' ? 'per day' : ''}</p>
-${goal.type !== 'everyday' ? '<p>Status: '+(goal.type === 'totaltime' ? goal.totalGoal : goal.numericalGoal) + ' ' + (goal.type==='totaltime'?'minutes':'')+'</p>': ''}
+${goal.type !== 'everyday' ? '<p>Status: '+(goal.type === 'totaltime' ? goal.totalStatus : goal.numericalStatus) + ' ' + (goal.type==='totaltime'?'minutes':'')+'</p>': ''}
 <button onclick="complete('${id}', '${goal.type}')">Complete</button>
 `;
 		el.style.border = '1px solid lightgray';
