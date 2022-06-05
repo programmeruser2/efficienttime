@@ -1,5 +1,6 @@
 exports.goals = (req, res) => {
 	res.render('goals', {
-		title: 'Goals'
+		title: 'Goals',
+		xp: req.user.xp
 	});
 };

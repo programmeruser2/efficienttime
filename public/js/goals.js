@@ -23,7 +23,7 @@ async function updateGoals() {
 <p>${goal.goalDescription || ''}</p>
 <p>Type: ${types[goal.type]}</p>
 <p>Goal: ${goal.dailyGoal} ${goal.type === 'numericalgoal' ? '' : 'minutes'} ${goal.type === 'everyday' ? 'per day' : ''}</p>
-<button onclick="complete(${id})">Complete</button>
+<button onclick="complete('${id}', '${goal.type}')">Complete</button>
 `;
 		el.style.border = '1px solid lightgray';
 		container.append(el);
@@ -33,8 +33,54 @@ async function updateGoals() {
 
 updateGoals();
 
-
-
+async function complete(id, type) {
+	const goal = await api.goals.get(id);
+	if (type === 'everyday') {
+		api.goals.complete(id);
+	} else if (type === 'totaltime') {
+		let { value: offset } = await Swal.fire({
+			title: 'How many minutes did you complete?',
+			input: 'text',
+			//inputLabel: 'The goal',
+			//inputValue: '1',
+			showCancelButton: true,
+			inputValidator: (value) => {
+				if (!value) {
+					return 'Please enter a value!';
+				}
+				const n = Number(value);
+				if (!Number.isInteger(n)) {
+					return 'Please enter an integer!';
+				}
+				if (type !== 'numericalgoal' && n <= 0) {
+					return 'Please enter positive integer minutes!';
+				}
+			}
+		});
+		api.goals.complete(id, goal.totalStatus+offset);
+	} else if (type === 'numericalgoal') {
+		let { value: newval } = await Swal.fire({
+			title: 'What is the new value?',
+			input: 'text',
+			//inputLabel: 'The goal',
+			//inputValue: '1',
+			showCancelButton: true,
+			inputValidator: (value) => {
+				if (!value) {
+					return 'Please enter a value!';
+				}
+				const n = Number(value);
+				if (!Number.isInteger(n)) {
+					return 'Please enter an integer!';
+				}
+				if (type !== 'numericalgoal' && n <= 0) {
+					//return 'Please enter positive integer minutes!';
+				}
+			}
+		});
+		api.goals.complete(id, newval);
+	}
+}
 
 const questions = {
 	'everyday': 'How many minutes every day?',
@@ -143,3 +189,7 @@ async function newGoal() {
 	await api.goals.new(options);
 	await updateGoals();
 }
+
+
+
+

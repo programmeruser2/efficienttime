@@ -92,10 +92,13 @@ router.post('/:id/complete', goalAuthAsync, (req, res) => {
 	if (req.goal.type !== 'everyday') {
 		const newValue = req.body.value;
 		const xp = Math.abs(req.body.value - (req.goal.type === 'totaltime' ? req.goal.totalStatus : req.goal.numericalStatus));
+		//console.log(xp);
 		req.user.xp += xp;
 	} else {
+		//console.log(req.dailyStreak);
+		//console.log(req.user.xp)
 		req.goal.dailyStreak += 1;
-		req.user.xp += dailyStreak;
+		req.user.xp += req.goal.dailyStreak;
 	}
 	req.user.save();
 	res.json({status:'OK'});
