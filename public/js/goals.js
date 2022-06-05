@@ -5,7 +5,7 @@ const questions = {
 	//'booleangoal': 'What is your goal for what you want to achieve?',
 	//'categorical': 'What do you want as the final state?'
 }
-//dropped support for boolean and categorical
+//dropped support for boolean and categorical for now
 async function newGoal() {
 	const { value: name } = await Swal.fire({
 		title: 'What is your goal name?',
@@ -26,8 +26,8 @@ async function newGoal() {
 			everyday: 'Goal for time every day',
 			totaltime: 'Goal for total minutes/time',
 			numericalgoal: 'Goal for getting to a certain number',
-			booleangoal: 'Goal for achieving something',
-			categorical: 'Goal for reaching a certain state'
+			//booleangoal: 'Goal for achieving something',
+			//categorical: 'Goal for reaching a certain state'
 		},
 		inputPlaceholder: 'Select a goal type',
 		showCancelButton: true,
