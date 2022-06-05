@@ -34,3 +34,14 @@ api.goals.delete = async (id) => {
 		method: 'DELETE'
 	});
 };
+api.goals.complete = async (id, newValue) => {
+	await fetch('/api/goals/' + id + '/complete', {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json'
+		},
+		body: JSON.stringify({
+			value: newValue
+		})
+	});
+};

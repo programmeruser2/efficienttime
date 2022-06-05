@@ -16,6 +16,7 @@ async function updateGoals() {
 		const goal = await api.goals.get(id);
 		//yes innerhtml bad too lazy no time how many times do i have to say this
 		const el = document.createElement('div');
+		el.dataset.id = id;
 		el.innerHTML = 
 `
 <h2>${goal.goalName}</h2>
