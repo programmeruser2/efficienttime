@@ -24,6 +24,7 @@ async function updateGoals() {
 <p>${goal.goalDescription || ''}</p>
 <p>Type: ${types[goal.type]}</p>
 <p>Goal: ${goal.type === 'everyday' ? goal.dailyGoal : (goal.type === 'totaltime' ? goal.totalGoal : goal.numericalGoal)} ${goal.type === 'numericalgoal' ? '' : 'minutes'} ${goal.type === 'everyday' ? 'per day' : ''}</p>
+${goal.type !== 'everyday' ? '<p>Status: '+(goal.type === 'totaltime' ? goal.totalGoal : goal.numericalGoal) + ' ' + (goal.type==='totaltime'?'minutes':'')+'</p>': ''}
 <button onclick="complete('${id}', '${goal.type}')">Complete</button>
 `;
 		el.style.border = '1px solid lightgray';
@@ -59,6 +60,7 @@ async function complete(id, type) {
 				}
 			}
 		});
+		if (!offset) return;
 		api.goals.complete(id, goal.totalStatus+offset);
 	} else if (type === 'numericalgoal') {
 		let { value: newval } = await Swal.fire({
@@ -80,6 +82,7 @@ async function complete(id, type) {
 				}
 			}
 		});
+		if (!newval) return;
 		api.goals.complete(id, newval);
 	}
 	await updateGoals();

@@ -1,3 +1,4 @@
+const e = require('express');
 const express = require('express');
 const router = express.Router();
 const Goal = require('../../models/Goal');
@@ -91,9 +92,16 @@ router.post('/', asyncWrap(async (req, res) => {
 router.post('/:id/complete', goalAuthAsync, (req, res) => {
 	if (req.goal.type !== 'everyday') {
 		const newValue = req.body.value;
-		const xp = Math.abs(req.body.value - (req.goal.type === 'totaltime' ? req.goal.totalStatus : req.goal.numericalStatus));
+		const xp = Math.abs(newValue - (req.goal.type === 'totaltime' ? req.goal.totalStatus : req.goal.numericalStatus));
 		//console.log(xp);
 		req.user.xp += xp;
+		if (req.goal.type === totaltime) {
+			req.goal.totalStatus = newValue;
+
+		} else {
+			req.goal.numericalStatus = newValue;
+		}
+		//(req.goal.type === 'totaltime' ? req.goal.totalStatus : req.goal.numericalStatus) = newValue;
 	} else {
 		//console.log(req.dailyStreak);
 		//console.log(req.user.xp)
