@@ -23,6 +23,7 @@ async function updateGoals() {
 <p>${goal.goalDescription || ''}</p>
 <p>Type: ${types[goal.type]}</p>
 <p>Goal: ${goal.dailyGoal} ${goal.type === 'numericalgoal' ? '' : 'minutes'} ${goal.type === 'everyday' ? 'per day' : ''}</p>
+<button onclick="complete(${id})">Complete</button>
 `;
 		el.style.border = '1px solid lightgray';
 		container.append(el);
