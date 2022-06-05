@@ -88,7 +88,7 @@ exports.postLogin = (req, res, next) => {
       if (err) { return next(err); }
 			//console.log('no err checkpoint 1');
       req.flash('success', { msg: 'Success! You are logged in.' });
-			//console.log('checkpoint 2');get
+			//console.log('checkpoint 2');
       res.redirect(req.session.returnTo || '/dash');
     });
   })(req, res, next);
