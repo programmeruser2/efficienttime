@@ -1,6 +1,21 @@
 const express = require('express');
 const router = express.Router();
 const Goal = require('../../models/Goal');
+const { asyncWrap } = require('../../util');
+async function goalAuthAsync(req, res, next) {
+	req.goal = (await Goal.find({_id:req.params.id}))[0];
+	//return console.log(goal);
+	const goal = req.goal;
+	const user = req.user;
+	if (!goal) console.log('stop sending fake goals');
+	if (!user.hasGoal(goal._id.valueOf())) console.log('stop trying to impersonate');
+	console.log('finish')
+	if (!goal || !user.hasGoal(goal._id.valueOf())) return res.status(404).json({errors:['no such goal']});
+	next();
+	
+}
+const goalAuth = asyncWrap(goalAuthAsync);
+//app.use(goalAuth);
 router.get('/', (req, res) => {
 	//console.log(req.user.goals);
 	const user = req.user;
@@ -10,13 +25,21 @@ router.get('/', (req, res) => {
 	console.log(user.getGoals());
 	res.json(user.getGoals());
 });
-router.get('/:id:', async (req, res) => {
-	const user = req.user,
-	goal = await Goal.find(req.params.id)[0];
-	if (!goal || !user.hasGoal(goal)) res.status(404).json({errors:['no such goal']});
+router.get('/:id', goalAuth, (req, res) => {
+	console.log('hi were getting goal', req.params.id);
+	const { user, goal } = req;
 	res.json(goal.toJSON());
 });
-router.post('/', async (req, res) => {
+router.put('/:id', goalAuth, async (req, res) => {
+
+});
+router.delete('/:id', goalAuth, asyncWrap(async (req, res) => {
+	req.user.goals = req.user.goals.filter(item => item._id.valueOf() !== req.params.id);
+	await req.user.save();
+	await Goal.findByIdAndRemove(req.params.id); //delete not needed bc it returns, only remove
+	res.send({status:'OK'});
+}));
+router.post('/', asyncWrap(async (req, res) => {
 	const errors = [];
 	console.log('we are starting');
 	console.log(req.body);
@@ -50,6 +73,6 @@ router.post('/', async (req, res) => {
 	console.log('status ok!!!');
 	console.log(req.user);
 	res.send({status:'OK'});
-});
+}));
 
 module.exports = router;
